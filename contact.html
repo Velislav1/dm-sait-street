@@ -1,0 +1,68 @@
+<!DOCTYPE html>
+<html lang="bg">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>Контакти | D&amp;M</title>
+<meta name="description" content="Свържете се с D&amp;M – адрес, телефон, имейл и форма за запитване.">
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Archivo:wght@400;500;600;700;800;900&family=Archivo+Black&display=swap" rel="stylesheet">
+<script>try{var t=localStorage.getItem("theme")||(matchMedia("(prefers-color-scheme: dark)").matches?"dark":"light");document.documentElement.dataset.theme=t}catch(e){}</script>
+<link rel="stylesheet" href="css/style.css">
+</head>
+<body>
+<div class="topbar">Безплатна доставка над 100 лв. · 14 дни право на връщане</div>
+<header class="site"><div class="container nav">
+  <a href="index.html" class="logo">D<span>&amp;</span>M</a>
+  <ul>
+    <li><a href="index.html">Начало</a></li>
+    <li><a href="products.html">Колекции</a></li>
+    <li><a href="about.html">За нас</a></li>
+    <li><a href="contact.html">Контакти</a></li>
+  </ul>
+  <div class="nav-right"><button class="theme-btn" id="theme-btn" aria-label="Смени тема">🌙</button><button class="menu-btn" aria-label="Меню">☰</button></div>
+</div></header>
+
+<div class="page-hero"><div class="container"><span class="eyebrow">Контакти</span><h1 style="font-size:clamp(2rem,5vw,3.2rem)">Свържи се с нас</h1><p>Ще отговорим в рамките на един работен ден.</p></div></div>
+<section><div class="container">
+  <div class="contact-grid">
+    <div><h2>Тук сме за теб</h2><p class="lead" style="margin-top:14px">Попитай за размер, наличност или стилистичен съвет.</p>
+      <div class="info-list">
+        <div><span class="ico">📍</span><p><small>Адрес</small>гр. София, ул. „Примерна“ 12</p></div>
+        <div><span class="ico">📞</span><p><small>Телефон</small>+359 88 888 8888</p></div>
+        <div><span class="ico">✉️</span><p><small>Имейл</small>info@dm-style.bg</p></div>
+        <div><span class="ico">🕒</span><p><small>Работно време</small>Пон–Съб: 10:00–19:00</p></div>
+      </div></div>
+    <form id="contact-form">
+      <div class="row2"><label>Име<input required name="name" placeholder="Иван Иванов"></label><label>Телефон<input name="phone" placeholder="0888 888 888"></label></div>
+      <label>Имейл<input type="email" required name="email" placeholder="ime@email.com"></label>
+      <label>Тема<select name="topic"><option>Запитване за продукт</option><option>Поръчка</option><option>Връщане / замяна</option><option>Друго</option></select></label>
+      <label>Съобщение<textarea required name="msg" placeholder="Как можем да ти помогнем?"></textarea></label>
+      <button class="btn primary" type="submit">Изпрати</button>
+      <div class="form-msg">Благодарим! Съобщението е изпратено – ще се свържем с теб скоро.</div>
+    </form>
+  </div>
+  <div class="map"><iframe loading="lazy" title="Карта" src="https://www.google.com/maps?q=Sofia,Bulgaria&output=embed"></iframe></div>
+</div></section>
+<section style="padding-top:0"><div class="container" style="max-width:760px">
+  <div class="section-head center"><span class="eyebrow">FAQ</span><h2>Често задавани въпроси</h2></div>
+  <details><summary>Колко време отнема доставката?</summary><p>Обикновено 1–3 работни дни с куриер до адрес или офис.</p></details>
+  <details><summary>Мога ли да върна или заменя артикул?</summary><p>Да, в рамките на 14 дни, стига артикулът да е неизползван и с етикет.</p></details>
+  <details><summary>Какви са начините на плащане?</summary><p>Наложен платеж, банков превод или картово плащане.</p></details>
+</div></section>
+
+<footer class="site"><div class="container">
+  <div class="foot">
+    <div><a href="index.html" class="logo">D<span>&amp;</span>M</a><p>Качествени дрехи с характер. Подбрани с внимание към материала, кройката и детайла.</p></div>
+    <div><h4>Навигация</h4><ul><li><a href="index.html">Начало</a></li><li><a href="products.html">Колекции</a></li><li><a href="about.html">За нас</a></li><li><a href="contact.html">Контакти</a></li></ul></div>
+    <div><h4>Категории</h4><ul><li><a href="products.html?cat=Дамски">Дамски</a></li><li><a href="products.html?cat=Мъжки">Мъжки</a></li><li><a href="products.html?cat=Аксесоари">Аксесоари</a></li></ul></div>
+    <div><h4>Контакт</h4><ul><li>гр. София, ул. „Примерна“ 12</li><li>+359 88 888 8888</li><li>info@dm-style.bg</li><li>Пон–Съб: 10:00–19:00</li></ul></div>
+  </div>
+  <div class="copy"><span>© 2026 Даниел и Михаил. Всички права запазени.</span><span>Политика за поверителност · Условия за ползване</span></div>
+</div></footer>
+<script src="js/icons.js"></script>
+<script src="js/products.js"></script>
+<script src="js/main.js"></script>
+</body>
+</html>
