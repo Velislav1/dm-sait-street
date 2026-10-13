@@ -1,0 +1,37 @@
+<!DOCTYPE html>
+<html lang="bg">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>Магазин | Avanti Drip</title>
+<meta name="description" content="Разгледай всички налични дрехи – Nike, Adidas, Under Armour. Филтрирай по категория и марка.">
+<meta property="og:image" content="img/hero.jpg">
+<link rel="icon" href="favicon.png">
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Rubik:wght@400;500;600;700;800;900&display=swap" rel="stylesheet">
+<script>try{var t=localStorage.getItem("theme")||(matchMedia("(prefers-color-scheme: dark)").matches?"dark":"light");document.documentElement.dataset.theme=t}catch(e){}</script>
+<link rel="stylesheet" href="css/style.css">
+</head>
+<body>
+<div id="site-header"></div>
+
+<div class="page-head"><div class="container"><span class="tag">Магазин</span><h1 class="shop-title">Всички дрехи</h1><p>Всеки артикул е 1 брой. Щом се продаде – изчезва. Ако нещо ти хареса, не чакай.</p></div></div>
+<section style="padding-top:44px"><div class="container">
+  <div class="toolbar">
+    <div class="pills" id="f-g"></div>
+    <div class="pills" id="f-cat"></div>
+    <div class="pills brand" id="f-brand"></div>
+    <div class="pills size" id="f-size"></div>
+    <div class="bar2"><input id="search" type="search" placeholder="Търси по марка или модел…" aria-label="Търсене">
+      <select id="sort" aria-label="Подреди"><option value="new">Най-нови</option><option value="low">Цена: ниска → висока</option><option value="high">Цена: висока → ниска</option></select>
+      <span class="count" id="count"></span></div>
+  </div>
+  <div class="grid" id="catalog"></div>
+</div></section>
+
+<div id="site-footer"></div>
+<script src="js/products.js"></script>
+<script src="js/main.js"></script>
+</body>
+</html>

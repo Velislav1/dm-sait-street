@@ -1,19 +1,40 @@
-// РЕДАКТИРАЙ ТУК: продукти на магазина.
-// image: сложи път към снимка (напр. "img/palto.jpg"), или остави "" за цветен placeholder.
-// badge: "Ново", "-20%" или "" ; old: стара цена (по избор).
-const CATEGORIES = ["Дамски", "Мъжки", "Аксесоари"];
+// РЕДАКТИРАЙ ТУК: продукти на Avanti Drip.
+// images: първата е основната, втората (по избор) се показва при посочване и в галерията.
+// gender: "m" мъжко, "w" дамско, "u" унисекс (показва се и в двете).
+// status: "new" -> НОВО, "sold" -> ПРОДАДЕНО, "" -> без етикет.  old: стара цена (по избор).
+// ВАЖНО: размерите, цените и състоянието са примерни – оправи ги според реалните.
+const CATEGORIES = ["Суичъри", "Горнища с цип", "Тениски и блузи", "Футболни фланелки"];
 
 const PRODUCTS = [
-  { name: "Вълнено палто", type: "coat", cat: "Дамски", price: 189, old: 239, badge: "-20%", color: "#8c7b6b", image: "" },
-  { name: "Ленена рокля", type: "dress", cat: "Дамски", price: 98, badge: "Ново", color: "#b5683f", image: "" },
-  { name: "Копринена блуза", type: "blouse", cat: "Дамски", price: 74, color: "#6e7f73", image: "" },
-  { name: "Висока талия дънки", type: "jeans", cat: "Дамски", price: 82, color: "#4f6177", image: "" },
-  { name: "Класическо сако", type: "jacket", cat: "Мъжки", price: 169, badge: "Ново", color: "#3b3a3a", image: "" },
-  { name: "Памучна риза", type: "shirt", cat: "Мъжки", price: 64, color: "#7d8fa3", image: "" },
-  { name: "Chino панталон", type: "pants", cat: "Мъжки", price: 79, old: 99, badge: "-20%", color: "#a18f73", image: "" },
-  { name: "Плетен пуловер", type: "sweater", cat: "Мъжки", price: 92, color: "#5b4d40", image: "" },
-  { name: "Кожен колан", type: "belt", cat: "Аксесоари", price: 39, color: "#7a3f22", image: "" },
-  { name: "Копринен шал", type: "scarf", cat: "Аксесоари", price: 49, badge: "Ново", color: "#a8566b", image: "" },
-  { name: "Кожена чанта", type: "bag", cat: "Аксесоари", price: 139, color: "#4d3a2e", image: "" },
-  { name: "Вълнена шапка", type: "hat", cat: "Аксесоари", price: 29, color: "#6b6f5b", image: "" }
+  { gender: "m", id: 1, name: "Germany Away Jersey 2024", brand: "Adidas", cat: "Футболни фланелки", size: "XL", price: 49, status: "new",
+    condition: "Отлично", tags: ["Футбол", "Streetwear"], images: ["img/adidas-germany-front.jpg", "img/adidas-germany-back.jpg"] },
+  { gender: "u", id: 2, name: "Baltimore Ravens Hoodie", brand: "Nike", cat: "Суичъри", size: "L", price: 54, status: "new",
+    condition: "Много добро", tags: ["NFL", "Streetwear"], images: ["img/nike-ravens.jpg"] },
+  { gender: "m", id: 3, name: "Ravenwood Basketball 1/4 Zip", brand: "Adidas", cat: "Горнища с цип", size: "M", price: 39, status: "",
+    condition: "Отлично", tags: ["Баскетбол"], images: ["img/adidas-ravenwood.jpg"] },
+  { gender: "m", id: 4, name: "Indiana Pacers 1/4 Zip", brand: "Nike", cat: "Горнища с цип", size: "L", price: 36, status: "new",
+    condition: "Отлично", tags: ["NBA", "Баскетбол"], images: ["img/nike-pacers.jpg", "img/nike-pacers-back.jpg"] },
+  { gender: "u", id: 5, name: "NK Wings Hoodie", brand: "Under Armour", cat: "Суичъри", size: "L", price: 44, status: "",
+    condition: "Много добро", tags: ["Streetwear"], images: ["img/ua-nk-hoodie.jpg"] },
+  { gender: "m", id: 6, name: "West Virginia 1/4 Zip", brand: "Nike", cat: "Горнища с цип", size: "M", price: 34, status: "sold",
+    condition: "Отлично", tags: ["Колеж"], images: ["img/nike-wvu.jpg"] },
+  { gender: "m", id: 7, name: "Heatgear Long Sleeve", brand: "Under Armour", cat: "Тениски и блузи", size: "M", price: 24, old: 29, status: "",
+    condition: "Много добро", tags: ["Спорт"], images: ["img/ua-blue-back.jpg"] },
+  { gender: "m", id: 8, name: "Maroon 1/4 Zip Tee", brand: "Under Armour", cat: "Тениски и блузи", size: "L", price: 26, status: "",
+    condition: "Отлично", tags: ["Спорт"], images: ["img/ua-maroon.jpg"] }
 ];
+
+// Контакти – смени с истинските
+const CONTACT = {
+  instagram: "https://instagram.com/avantidrip",
+  facebook: "https://facebook.com/avantidrip",
+  tiktok: "https://tiktok.com/@avantidrip",
+  phone: "+359 88 888 8888",
+  email: "info@avantidrip.bg",
+  city: "България"
+};
+
+// Доставка: безплатна над "free" €, иначе "price" € (примерно – оправи)
+const SHIP = { free: 100, price: 5 };
+// Следващ дроп: day 0=нед, 1=пон ... 4=чет, 5=пет, 6=съб
+const DROP = { day: 5, hour: 19, minute: 0, label: "Петък · 19:00 ч." };

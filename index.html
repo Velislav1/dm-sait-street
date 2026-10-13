@@ -3,82 +3,97 @@
 <head>
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1">
-<title>Модерни дрехи за всеки ден | D&amp;M</title>
-<meta name="description" content="D&amp;M – качествени дамски и мъжки дрехи и аксесоари. Нова колекция, бърза доставка.">
+<title>Avanti Drip | Оригинални спортни дрехи втора ръка</title>
+<meta name="description" content="Avanti Drip – оригинални Nike, Adidas и Under Armour дрехи втора употреба. Нови дропове всяка седмица.">
+<meta property="og:image" content="img/hero.jpg">
+<link rel="icon" href="favicon.png">
 <link rel="preconnect" href="https://fonts.googleapis.com">
 <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
-<link href="https://fonts.googleapis.com/css2?family=Archivo:wght@400;500;600;700;800;900&family=Archivo+Black&display=swap" rel="stylesheet">
+<link href="https://fonts.googleapis.com/css2?family=Rubik:wght@400;500;600;700;800;900&display=swap" rel="stylesheet">
 <script>try{var t=localStorage.getItem("theme")||(matchMedia("(prefers-color-scheme: dark)").matches?"dark":"light");document.documentElement.dataset.theme=t}catch(e){}</script>
 <link rel="stylesheet" href="css/style.css">
 </head>
 <body>
-<div class="topbar">Безплатна доставка над 100 лв. · 14 дни право на връщане</div>
-<header class="site"><div class="container nav">
-  <a href="index.html" class="logo">D<span>&amp;</span>M</a>
-  <ul>
-    <li><a href="index.html">Начало</a></li>
-    <li><a href="products.html">Колекции</a></li>
-    <li><a href="about.html">За нас</a></li>
-    <li><a href="contact.html">Контакти</a></li>
-  </ul>
-  <div class="nav-right"><button class="theme-btn" id="theme-btn" aria-label="Смени тема">🌙</button><button class="menu-btn" aria-label="Меню">☰</button></div>
-</div></header>
+<div id="site-header"></div>
 
-<section class="hero"><div class="container">
-  <div><span class="eyebrow">Нова колекция 2026</span>
-  <h1>Облекло, което говори за теб</h1>
-  <p>Подбрани модели от качествени материали – за ежедневието, офиса и специалните поводи.</p>
-  <div class="actions"><a href="products.html" class="btn primary">Разгледай колекцията</a><a href="about.html" class="btn">Нашата история</a></div></div>
-  <div class="hero-art"><svg viewBox="0 0 64 64" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M32 18a5 5 0 1 0-5-5"/><path d="M32 18v6L6 44a3 3 0 0 0 2 5h48a3 3 0 0 0 2-5L32 24"/></svg></div>
+<section class="gender">
+  <a class="g-panel" href="shop.html?g=m"><img src="img/adidas-germany-front.jpg" alt="Мъжко облекло"><div><span class="tag">Нови попълнения</span><h2>Мъжко</h2><span class="go">Влез в магазина →</span></div></a>
+  <a class="g-panel" href="shop.html?g=w"><img src="img/nike-ravens.jpg" alt="Дамско облекло"><div><span class="tag">Скоро още</span><h2>Дамско</h2><span class="go">Влез в магазина →</span></div></a>
+</section>
+
+<section class="hero"><span class="bgword" aria-hidden="true">AVANTI</span><div class="container">
+  <div>
+    <span class="tag">Second hand · Streetwear · Sport</span>
+    <h1>Истински <em>drip</em>.<br>Втори живот.</h1>
+    <p>Оригинални Nike, Adidas и Under Armour – подбрани на ръка, проверени и на цена, която не боли. Всяка дреха е 1 от 1.</p>
+    <div class="actions"><a href="shop.html" class="btn or">Към магазина</a><a href="about.html" class="btn ghost">Как работим</a></div>
+    <div class="facts"><div><b>1/1</b><span>уникални дрехи</span></div><div><b>100%</b><span>оригинални марки</span></div><div><b>7 дни</b><span>нови дропове</span></div></div>
+  </div>
+  <div class="hero-visual collage"><img class="c1" src="img/hero.jpg" alt="Avanti Drip кутия с дрехи"><img class="c2" src="img/nike-pacers.jpg" alt=""><img class="c3" src="img/adidas-germany-front.jpg" alt=""><div class="sticker"><div>Нов<br>дроп<small>всяка седмица</small></div></div></div>
 </div></section>
 
-<div class="strip"><div class="container">
-  <div class="item"><strong>Безплатна доставка</strong><small>за поръчки над 100 лв.</small></div>
-  <div class="item"><strong>14 дни връщане</strong><small>без обяснения</small></div>
-  <div class="item"><strong>Качествени материали</strong><small>внимателно подбрани</small></div>
-  <div class="item"><strong>Плащане при доставка</strong><small>удобно и сигурно</small></div>
+<div class="drop"><div class="container">
+  <div class="dl"><span class="tag">Следващ дроп</span><strong id="drop-label">Петък · 19:00 ч.</strong></div>
+  <div class="cd" id="drop-time"><div><b>00</b><small>дни</small></div><div><b>00</b><small>часа</small></div><div><b>00</b><small>мин</small></div><div><b>00</b><small>сек</small></div></div>
+  <a class="btn or sm" href="https://instagram.com/avantidrip" target="_blank" rel="noopener">Напомни ми</a>
 </div></div>
 
+<div class="brands"><div class="track"><span>Nike</span><span>Adidas</span><span>Under Armour</span><span>The North Face</span><span>Champion</span><span>Carhartt</span><span>Nike</span><span>Adidas</span><span>Under Armour</span><span>The North Face</span><span>Champion</span><span>Carhartt</span><span>Nike</span><span>Adidas</span><span>Under Armour</span><span>The North Face</span><span>Champion</span><span>Carhartt</span><span>Nike</span><span>Adidas</span><span>Under Armour</span><span>The North Face</span><span>Champion</span><span>Carhartt</span></div></div>
+
 <section><div class="container">
-  <div class="section-head center"><span class="eyebrow">Категории</span><h2>Намери своя стил</h2></div>
-  <div class="cats">
-    <a href="products.html?cat=Дамски" class="cat c1"><div><h3>Дамски</h3><span>Разгледай →</span></div></a>
-    <a href="products.html?cat=Мъжки" class="cat c2"><div><h3>Мъжки</h3><span>Разгледай →</span></div></a>
-    <a href="products.html?cat=Аксесоари" class="cat c3"><div><h3>Аксесоари</h3><span>Разгледай →</span></div></a>
+  <div class="head"><div><span class="tag">Категории</span><h2>Какво търсиш?</h2></div><a class="more" href="shop.html">Всички →</a></div>
+  <div class="tiles">
+    <a class="tile" href="shop.html?cat=Суичъри"><img src="img/nike-ravens.jpg" alt="Суичъри"><div><h3>Суичъри</h3><span>Разгледай →</span></div></a>
+    <a class="tile" href="shop.html?cat=Горнища с цип"><img src="img/nike-pacers.jpg" alt="Горнища с цип"><div><h3>Горнища с цип</h3><span>Разгледай →</span></div></a>
+    <a class="tile" href="shop.html?cat=Тениски и блузи"><img src="img/ua-maroon.jpg" alt="Тениски"><div><h3>Тениски и блузи</h3><span>Разгледай →</span></div></a>
+    <a class="tile" href="shop.html?cat=Футболни фланелки"><img src="img/adidas-germany-front.jpg" alt="Футболни фланелки"><div><h3>Футболни фланелки</h3><span>Разгледай →</span></div></a>
   </div>
 </div></section>
 
 <section style="padding-top:0"><div class="container">
-  <div class="section-head center"><span class="eyebrow">Избрано</span><h2>Новости и намаления</h2></div>
-  <div class="grid" id="featured"></div>
-  <div style="text-align:center;margin-top:44px"><a href="products.html" class="btn">Виж всички продукти</a></div>
+  <div class="head"><div><span class="tag">Наскоро добавени</span><h2>Пресни попълнения</h2></div><a class="more" href="shop.html">Виж всички →</a></div>
+  <div class="grid" id="recent"></div>
 </div></section>
 
-<section class="dark"><div class="container">
-  <div class="section-head center"><span class="eyebrow">Отзиви</span><h2>Какво казват клиентите</h2></div>
-  <div class="reviews">
-    <div class="review"><div class="stars">★★★★★</div><p>Палтото е с невероятно качество и стои перфектно. Доставката дойде за един ден.</p><b>Мария К.</b></div>
-    <div class="review"><div class="stars">★★★★★</div><p>Най-накрая намерих риза, която не се мачка. Препоръчвам на всички колеги.</p><b>Георги П.</b></div>
-    <div class="review"><div class="stars">★★★★★</div><p>Страхотно обслужване и помощ при избора на размер. Ще пазарувам пак!</p><b>Елена С.</b></div>
+<section style="padding-top:0"><div class="container">
+  <div class="head"><div><span class="tag">Колекции</span><h2>Избери си свят</h2></div></div>
+  <div class="cols">
+    <a class="col" href="shop.html"><img src="img/adidas-ravenwood.jpg" alt="Баскетбол"><div><h3>Баскетбол</h3><p>NBA, колежански отбори и тренировъчни горнища с история.</p></div></a>
+    <a class="col" href="shop.html?cat=Футболни фланелки"><img src="img/adidas-germany-front.jpg" alt="Футбол"><div><h3>Футбол</h3><p>Национални отбори и клубни фланелки.</p></div></a>
+    <a class="col" href="shop.html?cat=Суичъри"><img src="img/ua-nk-hoodie.jpg" alt="Streetwear"><div><h3>Streetwear</h3><p>Суичъри и hoodies за всеки ден.</p></div></a>
   </div>
 </div></section>
 
-<section><div class="container"><div class="cta">
-  <h2>Имаш въпрос или търсиш конкретен модел?</h2>
-  <p>Пиши ни и ще ти помогнем да изградиш перфектния тоалет.</p>
-  <a href="contact.html" class="btn light">Свържи се с нас</a>
+<section style="padding-top:0"><div class="container">
+  <div class="head"><div><span class="tag">Как става</span><h2>3 стъпки до твоя drip</h2></div></div>
+  <div class="steps">
+    <div class="step"><b>01</b><h3>Избираш</h3><p>Разгледай новите дропове и избери дрехата, която те зарежда.</p></div>
+    <div class="step"><b>02</b><h3>Пишеш ни</h3><p>Натискаш „Поръчай“ или ни пишеш в Instagram – потвърждаваме наличността.</p></div>
+    <div class="step"><b>03</b><h3>Получаваш</h3><p>Изпращаме с куриер в цяла България. Проверяваш и плащаш при получаване.</p></div>
+  </div>
+</div></section>
+
+<section class="eco"><div class="container">
+  <div><span class="tag">Устойчива мода</span><h2>Пазарувайки втора ръка, носиш по-малко отпадък</h2>
+  <p>Всяка дреха, която получава втори живот, намалява нуждата от ново производство. Подбираме само качествени оригинални марки, които издържат години.</p></div>
+  <div class="nums"><div class="num"><b>1/1</b><span>няма две еднакви дрехи при нас</span></div><div class="num"><b>♻</b><span>всяка покупка е избор срещу бързата мода</span></div></div>
+</div></section>
+
+<section><div class="container">
+  <div class="head"><div><span class="tag">На живо</span><h2>Виж ги в действие</h2></div><a class="more" href="https://instagram.com/avantidrip" target="_blank" rel="noopener">Последвай ни →</a></div>
+  <div class="gal">
+    <a href="shop.html"><img src="img/nike-wvu.jpg" alt="" loading="lazy"></a><a href="shop.html"><img src="img/ua-blue-back.jpg" alt="" loading="lazy"></a>
+    <a href="shop.html"><img src="img/adidas-germany-back.jpg" alt="" loading="lazy"></a><a href="shop.html"><img src="img/nike-ravens.jpg" alt="" loading="lazy"></a>
+    <a href="shop.html"><img src="img/ua-nk-hoodie.jpg" alt="" loading="lazy"></a><a href="shop.html"><img src="img/nike-pacers-back.jpg" alt="" loading="lazy"></a>
+  </div>
+</div></section>
+
+<section style="padding-top:0"><div class="container"><div class="cta">
+  <h2>Не намираш своя размер?</h2><p>Пиши ни и ще те уведомим първи, когато излезе нещо по твоя вкус.</p>
+  <a href="contact.html" class="btn gr">Свържи се с нас</a>
 </div></div></section>
 
-<footer class="site"><div class="container">
-  <div class="foot">
-    <div><a href="index.html" class="logo">D<span>&amp;</span>M</a><p>Качествени дрехи с характер. Подбрани с внимание към материала, кройката и детайла.</p></div>
-    <div><h4>Навигация</h4><ul><li><a href="index.html">Начало</a></li><li><a href="products.html">Колекции</a></li><li><a href="about.html">За нас</a></li><li><a href="contact.html">Контакти</a></li></ul></div>
-    <div><h4>Категории</h4><ul><li><a href="products.html?cat=Дамски">Дамски</a></li><li><a href="products.html?cat=Мъжки">Мъжки</a></li><li><a href="products.html?cat=Аксесоари">Аксесоари</a></li></ul></div>
-    <div><h4>Контакт</h4><ul><li>гр. София, ул. „Примерна“ 12</li><li>+359 88 888 8888</li><li>info@dm-style.bg</li><li>Пон–Съб: 10:00–19:00</li></ul></div>
-  </div>
-  <div class="copy"><span>© 2026 Даниел и Михаил. Всички права запазени.</span><span>Политика за поверителност · Условия за ползване</span></div>
-</div></footer>
-<script src="js/icons.js"></script>
+<div id="site-footer"></div>
 <script src="js/products.js"></script>
 <script src="js/main.js"></script>
 </body>
