@@ -75,6 +75,47 @@ function toast(msg) {
   tt = setTimeout(() => t.classList.remove("show"), 2200);
 }
 
+/* ---------- форми (Formspree или mailto) ---------- */
+async function sendForm(data, subject) {
+  if (FORM.endpoint) {
+    const r = await fetch(FORM.endpoint, { method: "POST", headers: { Accept: "application/json", "Content-Type": "application/json" }, body: JSON.stringify({ _subject: subject, ...data }) });
+    if (!r.ok) throw new Error("send failed");
+    return "sent";
+  }
+  const body = Object.entries(data).map(([k, v]) => `${k}: ${v}`).join("\n");
+  location.href = `mailto:${CONTACT.email}?subject=${encodeURIComponent(subject)}&body=${encodeURIComponent(body)}`;
+  return "mailto";
+}
+
+/* ---------- напомняне за дроп ---------- */
+let remind;
+function openRemind() {
+  if (!remind) {
+    remind = document.createElement("div");
+    remind.className = "modal";
+    remind.innerHTML = `<div class="sheet small" role="dialog" aria-modal="true"><button class="x" aria-label="Затвори">×</button><div class="info">
+      <span class="tag" style="align-self:flex-start">Следващ дроп</span><h2>Напомни ми</h2>
+      <p>Остави имейла си и ще ти пишем преди дропа (${DROP.label}). Без спам.</p>
+      <form id="remind-form"><label>Имейл<input type="email" name="email" required placeholder="ime@email.com"></label>
+        <button class="btn or" type="submit">Напомни ми</button><div class="form-msg"></div></form></div></div>`;
+    remind.addEventListener("click", e => (e.target === remind || e.target.classList.contains("x")) && closeAll());
+    remind.querySelector("form").addEventListener("submit", async e => {
+      e.preventDefault();
+      const f = e.target, msg = $(".form-msg", f);
+      try {
+        const r = await sendForm({ email: f.email.value, type: "Напомняне за дроп " + DROP.label }, "Напомни ми за дропа");
+        msg.textContent = r === "sent" ? "Готово! Ще ти пишем преди дропа." : "Отваряме имейл приложението ти, за да потвърдиш.";
+        if (r === "sent") f.reset();
+      } catch (err) { msg.textContent = "Възникна грешка. Пробвай пак или ни пиши в Instagram."; }
+      msg.style.display = "block";
+    });
+    document.body.appendChild(remind);
+  }
+  remind.classList.add("open");
+  $("#overlay").classList.add("open");
+  document.body.style.overflow = "hidden";
+}
+
 /* ---------- scroll reveal ---------- */
 const io = "IntersectionObserver" in window && !matchMedia("(prefers-reduced-motion: reduce)").matches
   ? new IntersectionObserver(es => es.forEach(e => { if (e.isIntersecting) { e.target.classList.add("in"); io.unobserve(e.target); } }), { threshold: .12 })
@@ -119,7 +160,7 @@ const open = el => { el.classList.add("open"); $("#overlay").classList.add("open
 function closeAll() {
   $("#drawer").classList.remove("open");
   $("#overlay").classList.remove("open");
-  modal && modal.classList.remove("open");
+  $$(".modal").forEach(m => m.classList.remove("open"));
   document.body.style.overflow = "";
 }
 function drawCart() {
@@ -131,7 +172,7 @@ function drawCart() {
     ${items.length ? `<div class="ship"><p>${left ? `Още <b>${eur(left)}</b> до безплатна доставка` : "🎉 Имаш безплатна доставка!"}</p><div class="bar"><i style="width:${Math.min(100, sub / SHIP.free * 100)}%"></i></div></div>
     <div class="items">${items.map(p => `<div class="it"><img src="${p.images[0]}" alt=""><div><small>${p.brand}</small><b>${p.name}</b><span>Размер ${p.size}</span></div><div class="r"><b>${eur(p.price)}</b><button data-rm="${p.id}">Махни</button></div></div>`).join("")}</div>
     <div class="sum"><div><span>Междинна сума</span><b>${eur(sub)}</b></div><div><span>Доставка</span><b>${ship ? eur(ship) : "Безплатна"}</b></div><div class="t"><span>Общо</span><b>${eur(sub + ship)}</b></div>
-      <a class="btn or" href="contact.html?order=${cart.join(",")}">Поръчай</a><p>Плащаш при получаване – можеш да огледаш пратката.</p></div>`
+      <a class="btn or" href="contact.html?order=${cart.join(",")}">Поръчай</a><p>Плащаш при получаване, можеш да огледаш пратката.</p></div>`
     : '<div class="mt"><p>Кошницата е празна.</p><a class="btn gr" href="shop.html">Към магазина</a></div>'}`;
 }
 function addToCart(id) {
@@ -172,7 +213,7 @@ function openModal(id) {
       <ul class="specs"><li><span>Размер</span><b>${p.size}</b></li><li><span>Категория</span><b>${p.cat}</b></li><li><span>Състояние</span><b>${p.condition}</b></li><li><span>Наличност</span><b>${sold ? "Продадено" : "1 брой"}</b></li></ul>
       <div class="acts">${sold ? '<a class="btn gr" href="shop.html">Виж други модели</a>' : `${inCart ? '<a class="btn or" href="contact.html?order=' + cart.join(",") + '">Към поръчката</a>' : `<button class="btn or" data-add="${p.id}">Добави в кошницата</button>`}<a class="btn gr" href="${CONTACT.instagram}" target="_blank" rel="noopener">Питай в Instagram</a>`}
         <button class="btn ghost fav-line${favs.includes(p.id) ? " on" : ""}" data-fav="${p.id}">♥ Любим</button></div>
-      <p class="note">Всяка дреха е уникална – 1 брой. Проверка преди плащане.</p></div></div>`;
+      <p class="note">Всяка дреха е уникална, 1 брой. Проверка преди плащане.</p></div></div>`;
   modal.classList.add("open");
   $("#overlay").classList.add("open");
   document.body.style.overflow = "hidden";
@@ -183,6 +224,7 @@ function openModal(id) {
 }
 document.addEventListener("keydown", e => { if (e.key === "Escape") closeAll(); if (e.key === "Enter" && e.target.classList?.contains("card")) openModal(e.target.dataset.id); });
 document.addEventListener("click", e => {
+  if (e.target.closest("[data-remind]")) { openRemind(); return; }
   const f = e.target.closest(".card [data-fav]");
   if (f) { e.stopPropagation(); toggleFav(+f.dataset.fav); return; }
   const c = e.target.closest(".card");
@@ -218,7 +260,7 @@ const catalog = $("#catalog");
 if (catalog) {
   const q = new URLSearchParams(location.search);
   const GN = { m: "Мъжко", w: "Дамско" };
-  const state = { g: GN[q.get("g")] || "Всички", cat: CATEGORIES.includes(q.get("cat")) ? q.get("cat") : "Всички", brand: "Всички", size: "Всички", fav: q.get("fav") === "1", text: "", sort: "new" };
+  const state = { g: GN[q.get("g")] || "Всички", cat: CATEGORIES.includes(q.get("cat")) ? q.get("cat") : "Всички", brand: "Всички", size: "Всички", fav: q.get("fav") === "1", drop: q.get("drop") === "1", text: "", sort: "new" };
   const brands = ["Всички", ...new Set(PRODUCTS.map(p => p.brand))];
   const sizes = ["Всички", ...["S", "M", "L", "XL", "XXL"].filter(s => PRODUCTS.some(p => p.size === s))];
   const pills = (el, list, key) => {
@@ -226,27 +268,31 @@ if (catalog) {
     el.onclick = e => { if (e.target.tagName === "BUTTON") { state[key] = e.target.textContent; draw(); } };
   };
   function draw() {
-    $("#f-g").innerHTML = ["Всички", "Мъжко", "Дамско"].map(x => `<button class="${!state.fav && state.g === x ? "on" : ""}">${x}</button>`).join("") + `<button class="${state.fav ? "on" : ""}" data-fav-f>♥ Любими</button>`;
+    const on = x => (!state.fav && !state.drop && state.g === x ? "on" : "");
+    $("#f-g").innerHTML = ["Всички", "Мъжко", "Дамско"].map(x => `<button class="${on(x)}">${x}</button>`).join("") +
+      `<button class="${state.drop ? "on" : ""}" data-sp="drop">Актуален drop</button><button class="${state.fav ? "on" : ""}" data-sp="fav">♥ Любими</button>`;
     $("#f-g").onclick = e => {
       if (e.target.tagName !== "BUTTON") return;
-      if (e.target.hasAttribute("data-fav-f")) state.fav = !state.fav; else { state.g = e.target.textContent; state.fav = false; }
+      const sp = e.target.dataset.sp;
+      if (sp) { state.drop = sp === "drop" ? !state.drop : false; state.fav = sp === "fav" ? !state.fav : false; }
+      else { state.g = e.target.textContent; state.fav = state.drop = false; }
       draw();
     };
     pills($("#f-cat"), ["Всички", ...CATEGORIES], "cat");
     pills($("#f-brand"), brands, "brand");
     pills($("#f-size"), sizes, "size");
     const gk = { "Мъжко": "m", "Дамско": "w" }[state.g];
-    const list = PRODUCTS.filter(p => (!state.fav || favs.includes(p.id)) && (!gk || p.gender === gk || p.gender === "u") && (state.cat === "Всички" || p.cat === state.cat) &&
+    const list = PRODUCTS.filter(p => (!state.fav || favs.includes(p.id)) && (!state.drop || p.status === "new") && (!gk || p.gender === gk || p.gender === "u") && (state.cat === "Всички" || p.cat === state.cat) &&
       (state.brand === "Всички" || p.brand === state.brand) && (state.size === "Всички" || p.size === state.size) &&
       (p.brand + " " + p.name + " " + p.tags.join(" ")).toLowerCase().includes(state.text));
     if (state.sort === "low") list.sort((a, b) => a.price - b.price);
     else if (state.sort === "high") list.sort((a, b) => b.price - a.price);
     else list.sort((a, b) => (a.status === "sold") - (b.status === "sold"));
     const title = $("h1.shop-title");
-    if (title) title.textContent = state.fav ? "Любими" : state.g === "Всички" ? "Всички дрехи" : state.g + " облекло";
+    if (title) title.textContent = state.drop ? "Актуален drop" : state.fav ? "Любими" : state.g === "Всички" ? "Всички дрехи" : state.g + " облекло";
     $("#count").textContent = list.length + " " + (list.length === 1 ? "артикул" : "артикула");
-    const none = state.fav ? "Още нямаш любими – натисни ♥ върху дреха, която ти хареса."
-      : state.g === "Дамско" ? "Нови дамски модели идват скоро – пиши ни и ще те уведомим първа!" : "Няма резултати. Пробвай друг филтър.";
+    const none = state.drop ? "В момента няма нови попълнения. Следи броенето за следващия дроп." : state.fav ? "Още нямаш любими, натисни ♥ върху дреха, която ти хареса."
+      : state.g === "Дамско" ? "Нови дамски модели идват скоро, пиши ни и ще те уведомим първа!" : "Няма резултати. Пробвай друг филтър.";
     catalog.innerHTML = list.length ? list.map(cardHTML).join("") : `<p class="empty">${none}</p>`;
     reveal();
   }
@@ -263,13 +309,18 @@ if (form) {
   const ids = (q.get("order") || "").split(",").map(Number).filter(id => byId(id));
   if (ids.length) {
     const items = ids.map(byId), sub = items.reduce((s, p) => s + p.price, 0), ship = sub >= SHIP.free ? 0 : SHIP.price;
-    form.msg.value = `Здравейте! Искам да поръчам:\n${items.map(p => `• ${p.brand} ${p.name} (${p.size}) – ${eur(p.price)}`).join("\n")}\n\nОбщо: ${eur(sub + ship)} (доставка ${ship ? eur(ship) : "безплатна"}).\nАдрес за доставка: `;
+    form.msg.value = `Здравейте! Искам да поръчам:\n${items.map(p => `• ${p.brand} ${p.name} (${p.size}): ${eur(p.price)}`).join("\n")}\n\nОбщо: ${eur(sub + ship)} (доставка ${ship ? eur(ship) : "безплатна"}).\nАдрес за доставка: `;
     $("#order-note") && ($("#order-note").style.display = "block");
   } else if (q.get("item")) form.msg.value = `Здравейте! Интересувам се от: ${q.get("item")}. Налична ли е още?`;
-  form.addEventListener("submit", e => {
-    e.preventDefault(); // демо – за реално изпращане свържи с Formspree / EmailJS
-    $(".form-msg").style.display = "block";
-    form.reset();
+  form.addEventListener("submit", async e => {
+    e.preventDefault();
+    const msg = $(".form-msg");
+    try {
+      const r = await sendForm(Object.fromEntries(new FormData(form)), "Ново запитване от сайта");
+      msg.textContent = r === "sent" ? "Благодарим! Съобщението е изпратено. Ще се свържем с теб скоро." : "Отваряме имейл приложението ти, за да изпратиш съобщението.";
+      if (r === "sent") form.reset();
+    } catch (err) { msg.textContent = "Възникна грешка. Пиши ни директно в Instagram или на имейла."; }
+    msg.style.display = "block";
   });
 }
 
