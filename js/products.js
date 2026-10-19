@@ -10,17 +10,17 @@ const PRODUCTS = [
     condition: "Отлично", tags: ["Футбол", "Streetwear"], images: ["img/adidas-germany-front.jpg", "img/adidas-germany-back.jpg"] },
   { gender: "u", id: 2, name: "Baltimore Ravens Hoodie", brand: "Nike", cat: "Суичъри", size: "L", price: 54, status: "new",
     condition: "Много добро", tags: ["NFL", "Streetwear"], images: ["img/nike-ravens.jpg"] },
-  { gender: "m", id: 3, name: "Ravenwood Basketball 1/4 Zip", brand: "Adidas", cat: "Горнища с цип", size: "M", price: 39, status: "",
+  { gender: "m", id: 3, name: "Ravenwood Basketball 1/4 Zip", brand: "Adidas", cat: "Горнища с цип", size: "M", price: 39, old: 49, status: "",
     condition: "Отлично", tags: ["Баскетбол"], images: ["img/adidas-ravenwood.jpg"] },
   { gender: "m", id: 4, name: "Indiana Pacers 1/4 Zip", brand: "Nike", cat: "Горнища с цип", size: "L", price: 36, status: "new",
     condition: "Отлично", tags: ["NBA", "Баскетбол"], images: ["img/nike-pacers.jpg", "img/nike-pacers-back.jpg"] },
-  { gender: "u", id: 5, name: "NK Wings Hoodie", brand: "Under Armour", cat: "Суичъри", size: "L", price: 44, status: "",
+  { gender: "u", id: 5, name: "NK Wings Hoodie", brand: "Under Armour", cat: "Суичъри", size: "L", price: 44, old: 55, status: "",
     condition: "Много добро", tags: ["Streetwear"], images: ["img/ua-nk-hoodie.jpg"] },
   { gender: "m", id: 6, name: "West Virginia 1/4 Zip", brand: "Nike", cat: "Горнища с цип", size: "M", price: 34, status: "sold",
     condition: "Отлично", tags: ["Колеж"], images: ["img/nike-wvu.jpg"] },
   { gender: "m", id: 7, name: "Heatgear Long Sleeve", brand: "Under Armour", cat: "Тениски и блузи", size: "M", price: 24, old: 29, status: "",
     condition: "Много добро", tags: ["Спорт"], images: ["img/ua-blue-back.jpg"] },
-  { gender: "m", id: 8, name: "Maroon 1/4 Zip Tee", brand: "Under Armour", cat: "Тениски и блузи", size: "L", price: 26, status: "",
+  { gender: "m", id: 8, name: "Maroon 1/4 Zip Tee", brand: "Under Armour", cat: "Тениски и блузи", size: "L", price: 26, old: 32, status: "",
     condition: "Отлично", tags: ["Спорт"], images: ["img/ua-maroon.jpg"] }
 ];
 

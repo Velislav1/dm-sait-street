@@ -1,0 +1,41 @@
+<!DOCTYPE html>
+<html lang="bg">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>Промоции | Avanti Drip</title>
+<meta name="description" content="Намалени оригинални дрехи Nike, Adidas и Under Armour. Промоции, докато има налични.">
+<meta property="og:image" content="img/hero.jpg">
+<link rel="icon" href="favicon.png">
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Montserrat:wght@400;500;600;700;800&family=Underdog&display=swap" rel="stylesheet">
+<script>try{var t=localStorage.getItem("theme")||(matchMedia("(prefers-color-scheme: dark)").matches?"dark":"light");document.documentElement.dataset.theme=t}catch(e){}</script>
+<link rel="stylesheet" href="css/style.css?v=5">
+</head>
+<body>
+<div id="site-header"></div>
+
+<div class="page-head promo-head"><div class="container">
+  <div><span class="tag">Избрани дрехи</span><h1>Промо<span class="hand">ции</span></h1><p>Намалени оригинални дрехи, докато има налични. Всеки артикул е 1 брой.</p></div>
+  <div class="big-off">до <b id="promo-max">0</b>%<small>отстъпка</small></div>
+</div></div>
+<section style="padding-top:36px"><div class="container">
+  <div class="shop-top">
+    <button class="btn gr sm" id="filter-open" type="button">☰ Филтри <i id="filter-n"></i></button>
+    <input id="search" type="search" placeholder="Търси по марка или модел…" aria-label="Търсене">
+    <select id="sort" aria-label="Подреди"><option value="new">Най-нови</option><option value="low">Цена: ниска към висока</option><option value="high">Цена: висока към ниска</option><option value="disc">Най-голяма отстъпка</option></select>
+    <span class="count" id="count"></span>
+  </div>
+  <div class="chips" id="chips"></div>
+  <div class="shop-layout">
+    <aside class="filters" id="filters" aria-label="Филтри"></aside>
+    <div class="grid" id="catalog" data-mode="promo"></div>
+  </div>
+</div></section>
+
+<div id="site-footer"></div>
+<script src="js/products.js?v=5"></script>
+<script src="js/main.js?v=5"></script>
+</body>
+</html>

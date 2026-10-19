@@ -15,14 +15,12 @@ let favs = store.get("ad-fav", []);
 const byId = id => PRODUCTS.find(p => p.id == id);
 
 /* ---------- header / footer ---------- */
-const MARQUEE = "Нови дропове всяка седмица · Оригинални марки · Всяка дреха е 1 от 1 · Доставка с куриер в цяла България · Проверка преди плащане";
-const marqueeHTML = `<div class="marquee"><div class="track">${Array(8).fill(`<span>${MARQUEE.split(" · ").join("</span><span>")}</span>`).join("")}</div></div>`;
-const links = [["index.html", "Начало"], ["shop.html?g=m", "Мъжко"], ["shop.html?g=w", "Дамско"], ["shop.html", "Всички"], ["about.html", "За нас"], ["contact.html", "Контакти"]];
+const links = [["index.html", "Начало"], ["shop.html?g=m", "Мъжко"], ["shop.html?g=w", "Дамско"], ["shop.html", "Всички"], ["promo.html", "Промоции"]];
+const footLinks = [...links, ["about.html", "За нас"], ["contact.html", "Контакти"]];
 
-$("#site-header").outerHTML = `${marqueeHTML}
-<header class="site"><div class="container nav">
+$("#site-header").outerHTML = `<header class="site"><div class="container nav">
   <a href="index.html" class="logo" aria-label="Avanti Drip"><img class="lg-d" src="img/logo.png" alt="Avanti Drip"><img class="lg-l" src="img/logo-light.png" alt="Avanti Drip"></a>
-  <ul>${links.map(([h, t]) => `<li><a href="${h}"${h === cur ? ' class="active"' : ""}>${t}</a></li>`).join("")}</ul>
+  <ul>${links.map(([h, t]) => `<li><a href="${h}"${h === cur ? ' class="active"' : h === "promo.html" ? ' class="sale"' : ""}>${t}</a></li>`).join("")}</ul>
   <div class="nav-right">
     <button class="icon-btn" id="theme-btn" aria-label="Смени тема">🌙</button>
     <a class="icon-btn has-n" href="shop.html?fav=1" aria-label="Любими">♥<i id="fav-n"></i></a>
@@ -39,7 +37,7 @@ $("#site-footer").outerHTML = `<footer class="site"><div class="container">
   <div class="foot">
     <div><img class="fl" src="img/logo-light.png" alt="Avanti Drip"><p>Оригинални спортни и streetwear дрехи втора употреба. Подбрани на ръка, проверени и готови за нов живот.</p>
       <div class="socials"><a href="${CONTACT.instagram}" target="_blank" rel="noopener" aria-label="Instagram">IG</a><a href="${CONTACT.facebook}" target="_blank" rel="noopener" aria-label="Facebook">FB</a><a href="${CONTACT.tiktok}" target="_blank" rel="noopener" aria-label="TikTok">TT</a></div></div>
-    <div><h4>Навигация</h4><ul>${links.map(([h, t]) => `<li><a href="${h}">${t}</a></li>`).join("")}</ul></div>
+    <div><h4>Навигация</h4><ul>${footLinks.map(([h, t]) => `<li><a href="${h}">${t}</a></li>`).join("")}</ul></div>
     <div><h4>Категории</h4><ul>${CATEGORIES.map(c => `<li><a href="shop.html?cat=${encodeURIComponent(c)}">${c}</a></li>`).join("")}</ul></div>
     <div><h4>Контакт</h4><ul><li>${CONTACT.phone}</li><li>${CONTACT.email}</li><li>${CONTACT.city}</li><li>Доставка с куриер</li></ul></div>
   </div>
@@ -132,7 +130,11 @@ function reveal() {
 }
 
 /* ---------- cards ---------- */
-const badge = p => p.status === "new" ? '<span class="badge">Ново</span>' : p.status === "sold" ? '<span class="badge sold">Продадено</span>' : "";
+const pct = p => (p.old ? Math.round((1 - p.price / p.old) * 100) : 0);
+const badge = p => {
+  const b = [p.status === "new" && '<span class="badge">Ново</span>', p.status === "sold" && '<span class="badge sold">Продадено</span>', p.old && p.status !== "sold" && `<span class="badge sale">-${pct(p)}%</span>`].filter(Boolean).join("");
+  return b ? `<div class="badges">${b}</div>` : "";
+};
 const cardHTML = p => `<article class="card${p.status === "sold" ? " is-sold" : ""}" data-id="${p.id}" tabindex="0">
   <div class="ph">${badge(p)}<button class="fav${favs.includes(p.id) ? " on" : ""}" data-fav="${p.id}" aria-label="Любим">♥</button>
     <img src="${p.images[0]}" alt="${p.brand} ${p.name}" loading="lazy">${p.images[1] ? `<img class="alt" src="${p.images[1]}" alt="" loading="lazy">` : ""}
@@ -161,6 +163,7 @@ function closeAll() {
   $("#drawer").classList.remove("open");
   $("#overlay").classList.remove("open");
   $$(".modal").forEach(m => m.classList.remove("open"));
+  $("#filters") && $("#filters").classList.remove("open");
   document.body.style.overflow = "";
 }
 function drawCart() {
@@ -232,6 +235,8 @@ document.addEventListener("click", e => {
 });
 
 /* ---------- home ---------- */
+const promoHome = $("#promo-home");
+if (promoHome) promoHome.innerHTML = PRODUCTS.filter(p => p.old && p.status !== "sold").slice(0, 4).map(cardHTML).join("");
 const recent = $("#recent");
 if (recent) recent.innerHTML = PRODUCTS.slice(0, 8).map(cardHTML).join("");
 
@@ -255,50 +260,112 @@ if (dropEl) {
   tick(); setInterval(tick, 1000);
 }
 
-/* ---------- shop ---------- */
+/* ---------- shop / promo (странични филтри) ---------- */
 const catalog = $("#catalog");
 if (catalog) {
+  const MODE = catalog.dataset.mode || "shop";
+  const base = PRODUCTS.filter(p => MODE !== "promo" || p.old);
   const q = new URLSearchParams(location.search);
   const GN = { m: "Мъжко", w: "Дамско" };
-  const state = { g: GN[q.get("g")] || "Всички", cat: CATEGORIES.includes(q.get("cat")) ? q.get("cat") : "Всички", brand: "Всички", size: "Всички", fav: q.get("fav") === "1", drop: q.get("drop") === "1", text: "", sort: "new" };
-  const brands = ["Всички", ...new Set(PRODUCTS.map(p => p.brand))];
-  const sizes = ["Всички", ...["S", "M", "L", "XL", "XXL"].filter(s => PRODUCTS.some(p => p.size === s))];
-  const pills = (el, list, key) => {
-    el.innerHTML = list.map(x => `<button class="${state[key] === x ? "on" : ""}">${x}</button>`).join("");
-    el.onclick = e => { if (e.target.tagName === "BUTTON") { state[key] = e.target.textContent; draw(); } };
+  const SIZES = ["XS", "S", "M", "L", "XL", "XXL"];
+  const S = { g: GN[q.get("g")] || "Всички", cats: new Set(CATEGORIES.includes(q.get("cat")) ? [q.get("cat")] : []), brands: new Set(), sizes: new Set(),
+    min: "", max: "", avail: false, onlyNew: q.get("drop") === "1", fav: q.get("fav") === "1", text: "", sort: "new" };
+  const GK = { "Мъжко": "m", "Дамско": "w" };
+  // skip = коя група да се пропусне (за броячите до всяка опция)
+  const test = (p, skip) => {
+    const gk = GK[S.g];
+    return (skip === "g" || !gk || p.gender === gk || p.gender === "u") && (skip === "cats" || !S.cats.size || S.cats.has(p.cat)) &&
+      (skip === "brands" || !S.brands.size || S.brands.has(p.brand)) && (skip === "sizes" || !S.sizes.size || S.sizes.has(p.size)) &&
+      (S.min === "" || p.price >= +S.min) && (S.max === "" || p.price <= +S.max) && (!S.avail || p.status !== "sold") &&
+      (!S.onlyNew || p.status === "new") && (!S.fav || favs.includes(p.id)) && (p.brand + " " + p.name + " " + p.tags.join(" ")).toLowerCase().includes(S.text);
   };
+  const countOf = (key, field, val) => base.filter(p => test(p, key) && p[field] === val).length;
+
+  function renderFilters() {
+    const brands = [...new Set(base.map(p => p.brand))], sizes = SIZES.filter(s => base.some(p => p.size === s));
+    const prices = base.map(p => p.price), lo = Math.min(...prices), hi = Math.max(...prices);
+    const box = (key, field, val) => `<label class="opt"><input type="checkbox" data-k="${key}" data-f="${field}" value="${val}"${S[key].has(val) ? " checked" : ""}><span class="cb"></span><span class="t">${val}</span><em></em></label>`;
+    const flag = (k, label) => `<label class="opt"><input type="checkbox" data-k="${k}"${S[k] ? " checked" : ""}><span class="cb"></span><span class="t">${label}</span></label>`;
+    $("#filters").innerHTML = `<div class="fh"><h3>Филтри</h3><button class="x" data-fclose aria-label="Затвори">×</button></div>
+      <details open><summary>Пол</summary><div class="opts">${["Всички", "Мъжко", "Дамско"].map(x => `<label class="opt"><input type="radio" name="g" data-k="g" value="${x}"${S.g === x ? " checked" : ""}><span class="cb r"></span><span class="t">${x}</span></label>`).join("")}</div></details>
+      <details open><summary>Категория</summary><div class="opts">${CATEGORIES.map(c => box("cats", "cat", c)).join("")}</div></details>
+      <details open><summary>Марка</summary><div class="opts">${brands.map(b => box("brands", "brand", b)).join("")}</div></details>
+      <details open><summary>Размер</summary><div class="szs">${sizes.map(s => `<label class="sz"><input type="checkbox" data-k="sizes" data-f="size" value="${s}"${S.sizes.has(s) ? " checked" : ""}><span>${s}</span></label>`).join("")}</div></details>
+      <details open><summary>Цена (€)</summary><div class="pr"><input type="number" data-k="min" min="0" placeholder="${lo}" value="${S.min}" aria-label="Цена от"><span>до</span><input type="number" data-k="max" min="0" placeholder="${hi}" value="${S.max}" aria-label="Цена до"></div></details>
+      <details open><summary>Още</summary><div class="opts">${flag("avail", "Само налични")}${MODE === "shop" ? flag("onlyNew", "Актуален drop") : ""}${flag("fav", "♥ Любими")}</div></details>
+      <div class="ff"><button class="btn or sm" data-fclose type="button">Покажи резултатите</button><button class="btn gr sm" data-reset type="button">Изчисти всичко</button></div>`;
+  }
+  function refreshCounts() {
+    $$("#filters .opt input[data-f], #filters .sz input").forEach(inp => {
+      const n = countOf(inp.dataset.k, inp.dataset.f, inp.value), lab = inp.closest("label");
+      const em = $("em", lab);
+      em && (em.textContent = n);
+      lab.classList.toggle("zero", !n && !inp.checked);
+    });
+  }
+  let chipFns = [];
+  function chips() {
+    const c = [], add = (label, fn) => c.push([label, fn]);
+    if (S.g !== "Всички") add(S.g, () => (S.g = "Всички"));
+    S.cats.forEach(v => add(v, () => S.cats.delete(v)));
+    S.brands.forEach(v => add(v, () => S.brands.delete(v)));
+    S.sizes.forEach(v => add("Размер " + v, () => S.sizes.delete(v)));
+    if (S.min !== "" || S.max !== "") add(`Цена ${S.min !== "" ? S.min : "0"} до ${S.max !== "" ? S.max + " €" : "…"}`, () => (S.min = S.max = ""));
+    if (S.avail) add("Само налични", () => (S.avail = false));
+    if (S.onlyNew) add("Актуален drop", () => (S.onlyNew = false));
+    if (S.fav) add("♥ Любими", () => (S.fav = false));
+    if (S.text) add("„" + S.text + "“", () => { S.text = ""; $("#search").value = ""; });
+    chipFns = c.map(x => x[1]);
+    $("#chips").innerHTML = c.length ? c.map((x, i) => `<button data-chip="${i}">${x[0]}</button>`).join("") + '<button class="clear" data-reset>Изчисти всичко</button>' : "";
+    const n = $("#filter-n");
+    if (n) { n.textContent = c.length || ""; n.classList.toggle("on", !!c.length); }
+  }
   function draw() {
-    const on = x => (!state.fav && !state.drop && state.g === x ? "on" : "");
-    $("#f-g").innerHTML = ["Всички", "Мъжко", "Дамско"].map(x => `<button class="${on(x)}">${x}</button>`).join("") +
-      `<button class="${state.drop ? "on" : ""}" data-sp="drop">Актуален drop</button><button class="${state.fav ? "on" : ""}" data-sp="fav">♥ Любими</button>`;
-    $("#f-g").onclick = e => {
-      if (e.target.tagName !== "BUTTON") return;
-      const sp = e.target.dataset.sp;
-      if (sp) { state.drop = sp === "drop" ? !state.drop : false; state.fav = sp === "fav" ? !state.fav : false; }
-      else { state.g = e.target.textContent; state.fav = state.drop = false; }
-      draw();
-    };
-    pills($("#f-cat"), ["Всички", ...CATEGORIES], "cat");
-    pills($("#f-brand"), brands, "brand");
-    pills($("#f-size"), sizes, "size");
-    const gk = { "Мъжко": "m", "Дамско": "w" }[state.g];
-    const list = PRODUCTS.filter(p => (!state.fav || favs.includes(p.id)) && (!state.drop || p.status === "new") && (!gk || p.gender === gk || p.gender === "u") && (state.cat === "Всички" || p.cat === state.cat) &&
-      (state.brand === "Всички" || p.brand === state.brand) && (state.size === "Всички" || p.size === state.size) &&
-      (p.brand + " " + p.name + " " + p.tags.join(" ")).toLowerCase().includes(state.text));
-    if (state.sort === "low") list.sort((a, b) => a.price - b.price);
-    else if (state.sort === "high") list.sort((a, b) => b.price - a.price);
+    const list = base.filter(p => test(p));
+    if (S.sort === "low") list.sort((a, b) => a.price - b.price);
+    else if (S.sort === "high") list.sort((a, b) => b.price - a.price);
+    else if (S.sort === "disc") list.sort((a, b) => pct(b) - pct(a));
     else list.sort((a, b) => (a.status === "sold") - (b.status === "sold"));
     const title = $("h1.shop-title");
-    if (title) title.textContent = state.drop ? "Актуален drop" : state.fav ? "Любими" : state.g === "Всички" ? "Всички дрехи" : state.g + " облекло";
+    if (title) title.textContent = S.onlyNew ? "Актуален drop" : S.fav ? "Любими" : S.g === "Всички" ? "Всички дрехи" : S.g + " облекло";
     $("#count").textContent = list.length + " " + (list.length === 1 ? "артикул" : "артикула");
-    const none = state.drop ? "В момента няма нови попълнения. Следи броенето за следващия дроп." : state.fav ? "Още нямаш любими, натисни ♥ върху дреха, която ти хареса."
-      : state.g === "Дамско" ? "Нови дамски модели идват скоро, пиши ни и ще те уведомим първа!" : "Няма резултати. Пробвай друг филтър.";
+    const none = S.onlyNew ? "В момента няма нови попълнения. Следи броенето за следващия дроп." : S.fav ? "Още нямаш любими. Натисни ♥ върху дреха, която ти хареса."
+      : S.g === "Дамско" ? "Нови дамски модели идват скоро. Пиши ни и ще те уведомим първа!" : "Няма резултати. Пробвай да махнеш някой филтър.";
     catalog.innerHTML = list.length ? list.map(cardHTML).join("") : `<p class="empty">${none}</p>`;
+    chips();
+    refreshCounts();
     reveal();
   }
-  $("#search").addEventListener("input", e => { state.text = e.target.value.trim().toLowerCase(); draw(); });
-  $("#sort").addEventListener("change", e => { state.sort = e.target.value; draw(); });
-  document.addEventListener("favchange", () => state.fav && draw());
+  if (MODE === "promo" && $("#promo-max")) $("#promo-max").textContent = Math.max(0, ...base.map(pct));
+
+  renderFilters();
+  const F = $("#filters");
+  F.addEventListener("change", e => {
+    const el = e.target, k = el.dataset.k;
+    if (!k) return;
+    if (k === "g") S.g = el.value;
+    else if (S[k] instanceof Set) el.checked ? S[k].add(el.value) : S[k].delete(el.value);
+    else if (typeof S[k] === "boolean") S[k] = el.checked;
+    draw();
+  });
+  F.addEventListener("input", e => {
+    const k = e.target.dataset.k;
+    if (k === "min" || k === "max") { S[k] = e.target.value; draw(); }
+  });
+  const reset = () => {
+    S.g = "Всички"; S.cats.clear(); S.brands.clear(); S.sizes.clear(); S.min = S.max = ""; S.avail = S.onlyNew = S.fav = false; S.text = "";
+    $("#search").value = ""; renderFilters(); draw();
+  };
+  document.addEventListener("click", e => {
+    if (e.target.closest("[data-reset]")) reset();
+    if (e.target.closest("[data-fclose]")) closeAll();
+    const ch = e.target.closest("[data-chip]");
+    if (ch) { chipFns[+ch.dataset.chip](); renderFilters(); draw(); }
+  });
+  $("#filter-open").addEventListener("click", () => { F.classList.add("open"); $("#overlay").classList.add("open"); document.body.style.overflow = "hidden"; });
+  $("#search").addEventListener("input", e => { S.text = e.target.value.trim().toLowerCase(); draw(); });
+  $("#sort").addEventListener("change", e => { S.sort = e.target.value; draw(); });
+  document.addEventListener("favchange", () => S.fav && draw());
   draw();
 }
 
